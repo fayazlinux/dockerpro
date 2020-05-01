@@ -1,0 +1,37 @@
+version: '3'
+services:
+
+  databaseos:
+    image: mysql:5.7
+    volumes:
+        - mysql_storage_new:/var/lib/mysql
+
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: abc@123
+        MYSQL_DATABASE: mydb2
+        MYSQL_USER: cubexs
+        MYSQL_PASSWORD: abc@123
+
+
+  websitesos:
+
+    image: wordpress:5.1.1
+    depends_on:
+       - databaseos
+
+    ports:
+       - 8080:80
+    volumes:
+       - website:/var/www/html
+    restart: always
+    environment:
+       WORDPRESS_DB_HOST: databaseos
+       WORDPRESS_DB_USER: cubexs
+       WORDPRESS_DB_PASSWORD: abc@123
+       WORDPRESS_DB_NAME: mydb2
+
+
+volumes:
+    website:
+    mysql_storage_new:
